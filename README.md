@@ -32,10 +32,9 @@ services:
             - { name: ohmedia_cleanup.cleaner }
 ```
 
-Your service should implement the magic function `__invoke()` with no
-parameters. All your dependancies can be injected as usual via the
-`__construct()` function (you may need to provide `arguments` to your service
-definition).
+Your service should implement `CleanerInterface`. All your dependancies can be
+injected as usual via the `__construct()` function. (You may need to explicitly
+provide `arguments` to your service definition.)
 
 ```php
 <?php
@@ -43,8 +42,11 @@ definition).
 namespace App\Cleanup;
 
 use App\Repository\BlogPostRepository;
+use Doctrine\ORM\EntityManager;
+use OHMedia\CleanupBundle\Interfaces\CleanerInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
-class BlogPostCleaner
+class BlogPostCleaner implements CleanerInterface
 {
     private $blogPostRepository;
     private $em;
@@ -58,7 +60,7 @@ class BlogPostCleaner
         $this->em = $em;
     }
     
-    public function __invoke(): void
+    public function __invoke(OutputInterface $output): void
     {
         $blogPosts = $this->blogPostRepository->getOldBlogPosts();
         
@@ -67,6 +69,9 @@ class BlogPostCleaner
         }
         
         $this->em->flush();
+        
+        // (optionally) give some feeback via the output interface
+        $output->writeln('Blog posts deleted');
     }
 }
 ```

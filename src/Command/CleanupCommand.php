@@ -2,6 +2,7 @@
 
 namespace OHMedia\CleanupBundle\Command;
 
+use OHMedia\CleanupBundle\Interfaces\CleanerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -29,13 +30,13 @@ class CleanupCommand extends Command
     {
         foreach ($this->cleaners as $cleaner) {
             // calls the magic function __invoke
-            $cleaner();
+            $cleaner($output);
         }
 
         return Command::SUCCESS;
     }
 
-    public function addCleaner(mixed $cleaner): self
+    public function addCleaner(CleanerInterface $cleaner): self
     {
         $this->cleaners[] = $cleaner;
 
