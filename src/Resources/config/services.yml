@@ -2,10 +2,5 @@ services:
     OHMedia\CleanupBundle\Command\CleanupCommand:
         tags: ["console.command"]
 
-    OHMedia\CleanupBundle\EventListener\CleanupPrePersist:
-        arguments: ["@doctrine.orm.entity_manager", "@twig", "%ohmedia_cleanup.from_cleanup%", "%ohmedia_cleanup.from_name%", "%ohmedia_cleanup.subject_prefix%"]
-        tags:
-            -
-                name: 'doctrine.orm.entity_listener'
-                event: 'prePersist'
-                entity: 'OHMedia\CleanupBundle\Entity\Cleanup'
+    ohmedia_cleanup.command:
+        alias: OHMedia\CleanupBundle\Command\CleanupCommand

@@ -13,103 +13,60 @@ return [
 ];
 ```
 
-Make and run the migration:
+Create the daily CRON job:
 
 ```bash
-$ php bin/console make:migration
-$ php bin/console doctrine:migrations:migrate
+0 0 * * * /path/to/php /path/to/symfony/bin/console ohmedia:cleanup
 ```
 
-Create the CRON job:
+# Leverage the Daily CRON Job
 
-```bash
-* * * * * /path/to/php /path/to/symfony/bin/console ohmedia:cleanup:send
-```
-
-# Configuration
-
-Create `config/packages/oh_media_cleanup.yml` with the following contents:
+Each thing that needs to be cleaned up can be done so via a service tagged with
+`ohmedia_cleanup.cleaner`:
 
 ```yaml
-oh_media_cleanup:
-    cleanup: '-1 year' # this is the default
-    from:
-        cleanup: no-reply@website.com # required
-        name: Website.com # required
-    subject_prefix: '[WEBSITE.COM]' # optional
+services:
+    mybundle.cleaner:
+        class: App\Cleanup\BlogPostCleaner
+        tags:
+            - { name: ohmedia_cleanup.cleaner }
 ```
 
-The value of `cleanup` should be a string to pass to `new DateTime()`. Cleanups
-older than this DateTime will be deleted.
-
-The values of `from.cleanup` and `from.name` will be used to create an instance of
-`Util\CleanupAddress`. This value will be passed to `setFrom()` on all cleanups.
-
-The value of `subject_prefix` will be prepended to the subject of every Cleanup.
-
-# Creating Cleanups
-
-Simply populate and save an Cleanup entity:
+Your service should implement the magic function `__invoke()` with no
+parameters. All your dependancies can be injected as usual via the
+`__construct()` function (you may need to provide `arguments` to your service
+definition).
 
 ```php
-use OHMedia\CleanupBundle\Entity\Cleanup;
-use OHMedia\CleanupBundle\Util\CleanupAddress;
-use OHMedia\CleanupBundle\Util\CleanupAttachment;
+<?php
 
-$recipient = new CleanupAddress('justin@ohmedia.ca', 'Justin Hoffman');
+namespace App\Cleanup;
 
-$formUserCleanup = new CleanupAddress($form->get('cleanup'), $form->get('name'));
+use App\Repository\BlogPostRepository;
 
-$cleanup = new Cleanup();
-$cleanup
-    ->setSubject('Confirmation Cleanup')
-    ->setTemplate($template, $params)
-    ->setTo($recipient)
-    ->setReplyTo($formUserCleanup)
-;
-
-$attachment = new CleanupAttachment('/absolute/path/to/file.txt', 'Notes');
-
-$cleanup->setAttachments($attachment);
-
-$em->persist($cleanup);
-$em->flush();
+class BlogPostCleaner
+{
+    private $blogPostRepository;
+    private $em;
+    
+    public function __construct(
+        BlogPostRepository $blogPostRepository,
+        EntityManager $em
+    )
+    {
+        $this->blogPostRepository = $blogPostRepository;
+        $this->em = $em;
+    }
+    
+    public function __invoke(): void
+    {
+        $blogPosts = $this->blogPostRepository->getOldBlogPosts();
+        
+        foreach ($blogPosts as $blogPost) {
+            $this->em->remove($blogPost);
+        }
+        
+        $this->em->flush();
+    }
+}
 ```
-
-Don't bother using `setFrom()`. The value will get overridden. You can use
-`setHtml` or `setTemplate` to populate the cleanup content.
-
-Various functions on this class are variadic (https://www.php.net/manual/en/functions.arguments.php#functions.variable-arg-list).
-
-The new Cleanup will get sent the next time CRON runs.
-
-# Cleanup Styles
-
-Cleanup styles need to be applied inline. Create a file called
-`templates/bundles/OHMediaCleanupBundle/inline-css.html.twig`.
-
-The contents of that file can be:
-
-```twig
-{% apply inline_css %}
-    <style>
-        {# here, define your CSS styles as usual #}
-    </style>
-
-    {{ html|raw }}
-{% endapply %}
-```
-
-or 
-
-```twig
-{% apply inline_css(source('@styles/cleanup.css')) %}
-    {{ html|raw }}
-{% endapply %}
-```
-
-The path to the cleanup styles can be whatever it needs to be.
-
-_*Note:* It's recommended to have a separate set of styles for your cleanups. These
-styles should be as simple as possible. They need to work in all sorts of cleanup
-programs!_
