@@ -3,6 +3,7 @@
 namespace OHMedia\CleanupBundle;
 
 use OHMedia\CleanupBundle\DependencyInjection\Compiler\CleanupPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class OHMediaCleanupBundle extends Bundle
