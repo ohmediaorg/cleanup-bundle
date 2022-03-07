@@ -27,10 +27,8 @@ Each thing that needs to be cleaned up can be done so via a service tagged with
 
 ```yaml
 services:
-    mybundle.cleaner:
-        class: App\Cleanup\BlogPostCleaner
-        tags:
-            - { name: ohmedia_cleanup.cleaner }
+    App\Cleanup\BlogPostCleaner:
+        tags: ["ohmedia_cleanup.cleaner"]
 ```
 
 Your service should implement `CleanerInterface`. All your dependancies can be
