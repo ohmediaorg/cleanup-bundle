@@ -1,0 +1,21 @@
+{
+    "name": "justin-oh/cleanup-bundle",
+    "type": "symfony-bundle",
+    "description": "Symfony CleanupBundle",
+    "keywords": ["cleanup"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Justin Hoffman",
+            "cleanup": "justin@ohmedia.ca"
+        }
+    ],
+    "require": {
+        "php": ">=7.2.5",
+        "symfony/framework-bundle": "5.4.*",
+        "twig/cssinliner-extra": "^3.3"
+    },
+    "autoload": {
+        "psr-4": { "OHMedia\\CleanupBundle\\": "src/" }
+    }
+}
