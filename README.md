@@ -1,6 +1,7 @@
 # Overview
 
-This bundle offers functionality to leverage cleanup sending via a CRON job.
+This bundle offers a consistent way for pieces of code to hook into a daily
+CRON job for the purposes of data cleanup.
 
 # Installation
 
