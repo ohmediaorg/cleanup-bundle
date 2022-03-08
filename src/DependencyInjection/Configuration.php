@@ -17,7 +17,7 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder('ohmedia_cleanup');
+        $treeBuilder = new TreeBuilder('oh_media_cleanup');
 
         return $treeBuilder;
     }

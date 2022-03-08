@@ -23,12 +23,12 @@ Create the daily CRON job:
 # Leverage the Daily CRON Job
 
 Each thing that needs to be cleaned up can be done so via a service tagged with
-`ohmedia_cleanup.cleaner`:
+`oh_media_cleanup.cleaner`:
 
 ```yaml
 services:
     App\Cleanup\BlogPostCleaner:
-        tags: ["ohmedia_cleanup.cleaner"]
+        tags: ["oh_media_cleanup.cleaner"]
 ```
 
 Your service should implement `CleanerInterface`. All your dependancies can be

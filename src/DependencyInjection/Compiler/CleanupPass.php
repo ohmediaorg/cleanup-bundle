@@ -11,13 +11,13 @@ class CleanupPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         // always first check if the primary service is defined
-        if (!$container->has('ohmedia_cleanup.command')) {
+        if (!$container->has('oh_media_cleanup.command')) {
             return;
         }
 
-        $definition = $container->findDefinition('ohmedia_cleanup.command');
+        $definition = $container->findDefinition('oh_media_cleanup.command');
 
-        $tagged = $container->findTaggedServiceIds('ohmedia_cleanup.cleaner');
+        $tagged = $container->findTaggedServiceIds('oh_media_cleanup.cleaner');
 
         foreach ($tagged as $id => $tags) {
             $definition->addMethodCall('addCleaner', [new Reference($id)]);
