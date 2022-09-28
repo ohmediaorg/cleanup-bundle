@@ -26,7 +26,7 @@ class CleanupCommand extends Command
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         foreach ($this->cleaners as $cleaner) {
             // calls the magic function __invoke
