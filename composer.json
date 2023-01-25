@@ -1,5 +1,5 @@
 {
-    "name": "justin-oh/cleanup-bundle",
+    "name": "ohmediaorg/cleanup-bundle",
     "type": "symfony-bundle",
     "description": "Symfony CleanupBundle",
     "keywords": ["cleanup"],
