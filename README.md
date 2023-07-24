@@ -44,8 +44,7 @@ class BlogPostCleaner implements CleanerInterface
     public function __construct(
         BlogPostRepository $blogPostRepository,
         EntityManager $em
-    )
-    {
+    ) {
         $this->blogPostRepository = $blogPostRepository;
         $this->em = $em;
     }
