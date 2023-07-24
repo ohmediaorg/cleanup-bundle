@@ -13,7 +13,7 @@ class CleanupCommand extends Command
 
     public function __construct()
     {
-        $cleaners = [];
+        $this->cleaners = [];
 
         parent::__construct();
     }
