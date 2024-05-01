@@ -38,27 +38,22 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class BlogPostCleaner implements CleanerInterface
 {
-    private $blogPostRepository;
-    private $em;
-    
     public function __construct(
-        BlogPostRepository $blogPostRepository,
-        EntityManager $em
+        private BlogPostRepository $blogPostRepository
     ) {
         $this->blogPostRepository = $blogPostRepository;
-        $this->em = $em;
     }
-    
+
     public function __invoke(OutputInterface $output): void
     {
         $blogPosts = $this->blogPostRepository->getOldBlogPosts();
-        
+
         foreach ($blogPosts as $blogPost) {
-            $this->em->remove($blogPost);
+            $this->blogPostRepository->remove($blogPost, true);
         }
-        
+
         $this->em->flush();
-        
+
         // (optionally) give some feeback via the output interface
         $output->writeln('Blog posts deleted');
     }

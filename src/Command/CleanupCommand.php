@@ -9,14 +9,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CleanupCommand extends Command
 {
-    private $cleaners;
-
-    public function __construct()
-    {
-        $this->cleaners = [];
-
-        parent::__construct();
-    }
+    private array $cleaners = [];
 
     protected function configure(): void
     {

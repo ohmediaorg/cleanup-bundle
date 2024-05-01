@@ -2,5 +2,4 @@ services:
     OHMedia\CleanupBundle\Command\CleanupCommand:
         tags: ["console.command"]
 
-    oh_media_cleanup.command:
-        alias: OHMedia\CleanupBundle\Command\CleanupCommand
+    oh_media_cleanup.command: '@OHMedia\CleanupBundle\Command\CleanupCommand'

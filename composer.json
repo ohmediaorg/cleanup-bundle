@@ -16,5 +16,10 @@
     },
     "autoload": {
         "psr-4": { "OHMedia\\CleanupBundle\\": "src/" }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "OHMedia\\CleanupBundle\\Tests\\": "tests/"
+        }
     }
 }
