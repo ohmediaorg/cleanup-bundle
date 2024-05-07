@@ -5,14 +5,16 @@ CRON job for the purposes of data cleanup.
 
 # Installation
 
-Enable the bundle in `config/bundles.php`:
+Update `composer.json` by adding this to the `repositories` array:
 
-```php
-return [
-    // ...
-    OHMedia\CleanupBundle\OHMediaCleanupBundle::class => ['all' => true],
-];
+```json
+{
+    "type": "vcs",
+    "url": "https://github.com/ohmediaorg/cleanup-bundle"
+}
 ```
+
+Then run `composer require ohmediaorg/cleanup-bundle:dev-main`.
 
 Create the daily CRON job:
 
