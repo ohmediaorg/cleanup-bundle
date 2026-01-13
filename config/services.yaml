@@ -8,6 +8,3 @@ services:
         exclude:
             - '../src/Entity/'
             - '../src/OHMediaCleanupBundle.php'
-
-    # alias used in CleanupPass
-    oh_media_cleanup.command: '@OHMedia\CleanupBundle\Command\CleanupCommand'
