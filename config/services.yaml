@@ -1,5 +1,10 @@
 services:
-    OHMedia\CleanupBundle\Command\CleanupCommand:
-        tags: ["console.command"]
+    _defaults:
+        autowire: true
+        autoconfigure: true
 
-    oh_media_cleanup.command: '@OHMedia\CleanupBundle\Command\CleanupCommand'
+    OHMedia\CleanupBundle\:
+        resource: '../src/'
+        exclude:
+            - '../src/Entity/'
+            - '../src/OHMediaCleanupBundle.php'
